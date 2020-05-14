@@ -1,29 +1,32 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-// class App extends Component{
-//   render() {
-//     return(
-//       <input type="text" onChange={() => console.log("chnge text")} />
-//     )
-//   }
-// }
 
 const App = () => {
+  const profiles = [
+    { name: "Taro", age: 10 },
+    { name: "Hanako", age: 20 },
+    { name: "Hanakp" }
+  ]
+
   return (
     <div>
-      <Cat/>
-      <Cat/>
-      <Cat/>
-      <Cat/>
+      {
+        profiles.map((profile, index) => {
+          return <User name={profile.name} age={profile.age} key={index} />
+        })
+      }
     </div>
   );
 }
 
-const Cat = () => {
+const User = (props) => {
   return (
-    <div>ニャー</div>
+    <div>Hi, I am {props.name} and {props.age} years old.</div>
   )
 }
 
+User.defaultProps = {
+  age:1
+}
 
 export default App;
