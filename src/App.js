@@ -1,9 +1,29 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-function App() {
+// class App extends Component{
+//   render() {
+//     return(
+//       <input type="text" onChange={() => console.log("chnge text")} />
+//     )
+//   }
+// }
+
+const App = () => {
   return (
-    <h1>Hello World</h1>
+    <div>
+      <Cat/>
+      <Cat/>
+      <Cat/>
+      <Cat/>
+    </div>
   );
 }
+
+const Cat = () => {
+  return (
+    <div>ニャー</div>
+  )
+}
+
 
 export default App;
