@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import _ from 'lodash';
 
+// actionCreater(関数)をインポート
 import { readEvents } from '../actions/index'
 
 class EventsIndex extends Component {
