@@ -14,6 +14,13 @@ class EventShow extends Component {
     this.onDeleteClick = this.onDeleteClick.bind(this);
   }
 
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    if (id) {
+      this.props.getEvent(id);
+    }
+  }
+
   renderField(field) {
     const { input, label, type, meta: { touched, error } } = field;
 
@@ -34,7 +41,7 @@ class EventShow extends Component {
 
   async onSubmit(values) {
     console.log('onSubmit', values);
-    await this.props.postEvent(values);
+    await this.props.putEvent(values);
     // react-router-domライブラリからimportしているRouteコンポーネントで
     // 描画されたコンポーネントでは、propsにhistoryが組み込まれる
     this.props.history.push('/');
@@ -72,10 +79,18 @@ const validate = values => {
 }
 
 const mapDispatchToProps = dispatch => ({
-// actionCreater(関数)の引数も設定する
-deleteEvent: (id) => dispatch(deleteEvent(id))
+  // actionCreater(関数)の引数も設定する
+  deleteEvent: (id) => dispatch(deleteEvent(id)),
+  getEvent: (id) => dispatch(getEvent(id)),
+  putEvent: (values) => dispatch(putEvent(values)),
+  
 });
 
-export default connect(null, mapDispatchToProps)(
-  reduxForm({ validate, form: 'EventShowForm' })(EventShow)
+const mapStateToProps = (state, ownProps) => {
+  const event = state.events[ownProps.match.params.id]
+  return { initialValues: event, event }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({ validate, form: 'EventShowForm', enableReinitialize: true })(EventShow)
 )
