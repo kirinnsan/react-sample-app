@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 // actionCreater(関数)をインポート
 import { getEvent, deleteEvent, putEvent } from '../actions/index'
@@ -25,10 +27,14 @@ class EventShow extends Component {
     const { input, label, type, meta: { touched, error } } = field;
 
     return (
-      <div>
-        <input {...input} placeholder={label} type={type} />
-        {touched && error && <span>{error}</span>}
-      </div>
+      <TextField
+        hintText={label}
+        floatingLabelText={label}
+        type={type}
+        errorText={touched && error}
+        {...input}
+        fullWidth={true}
+      />
     )
   }
 
@@ -49,17 +55,16 @@ class EventShow extends Component {
 
   render() {
     // handleSubmitはredux-formで定義されているもの
-    const { handleSubmit, pristine, submitting } = this.props;
+    const { handleSubmit, pristine, submitting, invalid } = this.props;
+    const { style } = { margin: 12 };
 
     return (
       <form onSubmit={handleSubmit(this.onSubmit)}>
         <div><Field label="Title" name="title" type="text" component={this.renderField} /></div>
         <div><Field label="Body" name="body" type="text" component={this.renderField} /></div>
-        <div>
-          <input type="submit" value="Submit" disabled={pristine || submitting} />
-          <Link to="/" >Cancel</Link>
-          <Link to="/" onClick={this.onDeleteClick}>Delete</Link>
-        </div>
+        <RaisedButton label="Submit" type="Submit" style={style} disabled={pristine || submitting || invalid} />
+        <RaisedButton label="Cancel" style={style} containerElement={<Link to="/" />} />
+        <RaisedButton label="Delete" style={style} onClick={this.onDeleteClick} />
       </form>
     )
   }
@@ -83,7 +88,7 @@ const mapDispatchToProps = dispatch => ({
   deleteEvent: (id) => dispatch(deleteEvent(id)),
   getEvent: (id) => dispatch(getEvent(id)),
   putEvent: (values) => dispatch(putEvent(values)),
-  
+
 });
 
 const mapStateToProps = (state, ownProps) => {
